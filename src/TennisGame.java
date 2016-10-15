@@ -1,12 +1,13 @@
 /**
  * Created by Tronx on 15/10/2016.
  */
+
 public class TennisGame {
 
-    int playerOneScore;
-    int playerTwoScore;
-    String playerOneName;
-    String playerTwoName;
+    private int playerOneScore;
+    private int playerTwoScore;
+    private String playerOneName;
+    private String playerTwoName;
 
 
     public TennisGame() {
@@ -34,23 +35,23 @@ public class TennisGame {
             return formatScore(playerOneScore) + " equals";
         }
 
-        return formatScore(playerOneScore) + " - " + formatScore(playerTwoScore);
+        return formattedMatchScore(playerOneScore, playerTwoScore);
     }
 
     private boolean isEquals() {
-        if (playerOneScore == playerTwoScore)
-            return true;
-
-        return false;
+        return playerOneScore == playerTwoScore;
     }
 
     private boolean hasWinner() {
-        if (playerOneScore >= playerTwoScore + 2 && playerOneScore >= 4)
-            return true;
-        else if (playerTwoScore >= playerOneScore + 2 && playerTwoScore >= 4)
-            return true;
+        return (scoreDifference(playerOneScore, playerTwoScore) && matchIsWinnable());
+    }
 
-        return false;
+    private boolean matchIsWinnable() {
+        return playerOneScore >= 4 || playerTwoScore >= 4;
+    }
+
+    private boolean scoreDifference(int firstScore, int secondScore) {
+        return Math.abs(firstScore - secondScore) >= 2;
     }
 
     private boolean isAdvantage() {
@@ -67,6 +68,10 @@ public class TennisGame {
             return true;
 
         return false;
+    }
+
+    private String formattedMatchScore(int playerOneScore, int playerTwoScore) {
+        return formatScore(playerOneScore) + " - " + formatScore(playerTwoScore);
     }
 
     private String formatScore(int score) {

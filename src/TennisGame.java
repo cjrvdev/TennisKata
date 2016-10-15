@@ -43,31 +43,29 @@ public class TennisGame {
     }
 
     private boolean hasWinner() {
-        return (scoreDifference(playerOneScore, playerTwoScore) && matchIsWinnable());
+        return hasEnoughScoreDifference(playerOneScore, playerTwoScore, 2) && matchIsWinnable();
     }
 
     private boolean matchIsWinnable() {
         return playerOneScore >= 4 || playerTwoScore >= 4;
     }
 
-    private boolean scoreDifference(int firstScore, int secondScore) {
-        return Math.abs(firstScore - secondScore) >= 2;
+    private boolean hasEnoughScoreDifference(int firstScore, int secondScore, int minimumDifference) {
+        return Math.abs(firstScore - secondScore) >= minimumDifference;
     }
 
     private boolean isAdvantage() {
-        if (playerOneScore >= playerTwoScore + 1 && playerOneScore >= 3)
-            return true;
-        else if (playerTwoScore >= playerOneScore + 1 && playerTwoScore >= 3)
-            return true;
+        return hasEnoughScoreDifference(playerOneScore, playerTwoScore, 1) &&
+                ( playerCanGetAdvantage(playerOneScore) ||
+                        playerCanGetAdvantage(playerTwoScore) ) ;
+    }
 
-        return false;
+    private boolean playerCanGetAdvantage(int playerScore) {
+        return playerScore >= 3;
     }
 
     private boolean isDeuce() {
-        if (playerOneScore >= 3 && playerTwoScore >= 3 && playerOneScore == playerTwoScore)
-            return true;
-
-        return false;
+        return playerOneScore >= 3 && playerTwoScore >= 3 && playerOneScore == playerTwoScore;
     }
 
     private String formattedMatchScore(int playerOneScore, int playerTwoScore) {

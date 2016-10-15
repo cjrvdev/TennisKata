@@ -1,12 +1,13 @@
 /**
  * Created by Tronx on 15/10/2016.
  */
+
 public class TennisGame {
 
-    int playerOneScore;
-    int playerTwoScore;
-    String playerOneName;
-    String playerTwoName;
+    private int playerOneScore;
+    private int playerTwoScore;
+    private String playerOneName;
+    private String playerTwoName;
 
 
     public TennisGame() {
@@ -34,39 +35,41 @@ public class TennisGame {
             return formatScore(playerOneScore) + " equals";
         }
 
-        return formatScore(playerOneScore) + " - " + formatScore(playerTwoScore);
+        return formattedMatchScore(playerOneScore, playerTwoScore);
     }
 
     private boolean isEquals() {
-        if (playerOneScore == playerTwoScore)
-            return true;
-
-        return false;
+        return playerOneScore == playerTwoScore;
     }
 
     private boolean hasWinner() {
-        if (playerOneScore >= playerTwoScore + 2 && playerOneScore >= 4)
-            return true;
-        else if (playerTwoScore >= playerOneScore + 2 && playerTwoScore >= 4)
-            return true;
+        return hasEnoughScoreDifference(playerOneScore, playerTwoScore, 2) && matchIsWinnable();
+    }
 
-        return false;
+    private boolean matchIsWinnable() {
+        return playerOneScore >= 4 || playerTwoScore >= 4;
+    }
+
+    private boolean hasEnoughScoreDifference(int firstScore, int secondScore, int minimumDifference) {
+        return Math.abs(firstScore - secondScore) >= minimumDifference;
     }
 
     private boolean isAdvantage() {
-        if (playerOneScore >= playerTwoScore + 1 && playerOneScore >= 3)
-            return true;
-        else if (playerTwoScore >= playerOneScore + 1 && playerTwoScore >= 3)
-            return true;
+        return hasEnoughScoreDifference(playerOneScore, playerTwoScore, 1) &&
+                ( playerCanGetAdvantage(playerOneScore) ||
+                        playerCanGetAdvantage(playerTwoScore) ) ;
+    }
 
-        return false;
+    private boolean playerCanGetAdvantage(int playerScore) {
+        return playerScore >= 3;
     }
 
     private boolean isDeuce() {
-        if (playerOneScore >= 3 && playerTwoScore >= 3 && playerOneScore == playerTwoScore)
-            return true;
+        return playerOneScore >= 3 && playerTwoScore >= 3 && playerOneScore == playerTwoScore;
+    }
 
-        return false;
+    private String formattedMatchScore(int playerOneScore, int playerTwoScore) {
+        return formatScore(playerOneScore) + " - " + formatScore(playerTwoScore);
     }
 
     private String formatScore(int score) {
